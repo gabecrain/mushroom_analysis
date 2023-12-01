@@ -6,7 +6,7 @@ from scipy.stats import trim_mean, iqr, pearsonr, stats
 import statsmodels.api as sm
 import plotly.express as px
 
-mushrooms = pd.read_csv('/Users/gabecrain/Desktop/Mushroom_Project/mushrooms.csv')
+mushrooms = pd.read_csv('/Users/gabecrain/Desktop/Documents/Data Science/Mushroom_Project/mushrooms.csv')
 print(mushrooms.info())
 
 mushrooms.columns = mushrooms.columns.str.replace('-', '_')
@@ -89,3 +89,51 @@ plt.title('Mushroom Habitat Counts Distribution')
 plt.clf()
 
 print('mushroom habitat value counts:\n', habitat_counts)
+
+#find the proportion of mushrooms that bruise vs those that dont
+bruising_frequency = np.sum(mushrooms.bruises == 'True')
+print('amount of mushrooms that bruise:', bruising_frequency)
+
+bruising_proportion = np.mean(mushrooms.bruises == 'True')
+print('proportion of mushrooms that bruise', bruising_proportion)
+#approximately 42% of the mushrooms in this population bruise, meaning the other 58% do not bruise.
+
+print('\n')
+
+#find proportion of mushrooms that have a solitary population vs those that do not
+solitary_habitat_frequency = np.sum(mushrooms.population == 'solitary')
+print('frequency of mushrooms in a solitary population:', solitary_habitat_frequency)
+
+solitary_habitat_proportion = np.mean(mushrooms.population == 'solitary')
+print('proportion of mushrooms in a solitary population:', solitary_habitat_proportion)
+#approximately 21% of mushrooms in this dataset have a solitary population
+
+print('\n')
+
+#find proportion of mushrooms that are edible vs poisonous
+mushroom_class_frequency = np.sum(mushrooms['class'] == 'edible')
+print('frequency of edible mushrooms:', mushroom_class_frequency)
+
+mushroom_class_proportion = np.mean(mushrooms['class'] == 'edible')
+print('proportion of edible mushrooms', mushroom_class_proportion)
+#approximately 52% of mushrooms in this dataset are classified as edible, meaning the other 48% are classified as poisonous.
+
+print('\n')
+
+#find median and central tendency of ring_number from mushrooms dataset
+ring_number_order = ['none', 'one', 'two']
+
+mushrooms['ring_number'] = pd.Categorical(mushrooms['ring_number'], ring_number_order, ordered=True)
+
+ring_number_values = mushrooms.ring_number.value_counts()
+print('mushroom ring number value counts:\n', ring_number_values)
+
+median_ring_number_index = np.median(mushrooms.ring_number.cat.codes)
+print('median ring number index:', median_ring_number_index)
+
+median_ring_number_category = ring_number_order[int(median_ring_number_index)]
+print('median ring number category:', median_ring_number_category)
+
+mean_ring_number_category = np.mean(mushrooms.ring_number.cat.codes)
+print('mean ring number category:', mean_ring_number_category)
+#this calculation can be interpreted as falling between one ring number and two, being much closer to one ring.
